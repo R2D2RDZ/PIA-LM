@@ -1,0 +1,262 @@
+<header>
+    <a href="/home"><img class="img" src="https://media-whatsapp.s3.amazonaws.com/becanet_2.png" alt="" width="150px" height="150px"/></a>
+    <nav>
+        <a href="/login"><p>Iniciar Sesion</p></a>
+        <a href="/register"><p>Registrarme</p></a>
+        <a type="button" onclick="cerrar_sesion()"><p>Cerrar Sesion</p></a>
+    </nav>
+</header>
+
+<body id="body"></body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    var datos = [];
+    window.onload = async function() {
+        
+        // USUARIO
+        var Usuario = localStorage.getItem('usuario');
+        var Contra = localStorage.getItem('contra');
+        console.log(Usuario, Contra);
+
+        if(!Usuario || Usuario== undefined){
+            window.location.href = '/login';
+            return;
+        }
+
+        if(!Contra || Contra== undefined){
+            window.location.href = '/login';
+            return;
+        }
+
+        datos = [
+            {
+                "_id": {
+                    "$oid": "645ab71090fd83f01ef2df61"
+                },
+                "titulo": "Beca Santander de Excelencia Académica",
+                "descripcion": "Beca para estudiantes con promedio alto en sus estudios y logros destacados en actividades extracurriculares",
+                "fecha_limite": "2023-07-31",
+                "monto": 10000,
+                "requisitos": {
+                    "promedio_minimo": 9,
+                    "participacion_actividades": true,
+                    "nivel_estudio": "Licenciatura"
+                },
+                "proceso_seleccion": {
+                    "evaluacion_curricular": true,
+                    "entrevista_personal": true
+                },
+                "contacto": {
+                    "nombre": "Juan Perez",
+                    "correo": "juan.perez@ejemplo.com",
+                    "telefono": "555-1234"
+                },
+                "categoria": "Academica",
+                "link": "https://www.becas-santander.com/es/index.html",
+                "imagen": "https://s3-eu-west-1.amazonaws.com/pro-becas-images-s3/emails/OGimage.jpg"
+            },
+            {
+                "_id": {
+                    "$oid": "645ab71090fd83f01ef2df62"
+                },
+                "titulo": "Beca Benito Juárez de Investigación en Ciencias Sociales",
+                "descripcion": "Beca para estudiantes que quieran realizar una investigación en ciencias sociales",
+                "fecha_limite": "2023-06-30",
+                "monto": 15000,
+                "requisitos": {
+                    "nivel_estudio": "Maestría",
+                    "tema_investigacion": "Ciencias Sociales"
+                },
+                "proceso_seleccion": {
+                    "propuesta_investigacion": true,
+                    "entrevista_personal": true
+                },
+                "contacto": {
+                    "nombre": "Maria Hernandez",
+                    "correo": "maria.hernandez@ejemplo.com",
+                    "telefono": "555-5678"
+                },
+                "categoria": "Investigacion",
+                "link": "https://becas.becasbenitojuarez.gob.mx/",
+                "imagen": "https://i0.wp.com/serendipia.digital/wp-content/uploads/2020/01/becas-benito-juarez-660-amlo-.jpg?fit=660%2C370&ssl=1"
+            },
+            {
+                "_id": {
+                    "$oid": "645ab71090fd83f01ef2df63"
+                },
+                "titulo": "Beca de Deporte",
+                "descripcion": "Beca para estudiantes que hayan demostrado excelencia en alguna disciplina deportiva",
+                "fecha_limite": "2023-09-30",
+                "monto": 8000,
+                "requisitos": {
+                    "participacion_actividades": true,
+                    "logros_deportivos": true,
+                    "nivel_estudio": "Preparatoria o superior"
+                },
+                "proceso_seleccion": {
+                    "evaluacion_curricular": true,
+                    "prueba_deportiva": true
+                },
+                "contacto": {
+                    "nombre": "Pedro Sanchez",
+                    "correo": "pedro.sanchez@ejemplo.com",
+                    "telefono": "555-9012"
+                },
+                "categoria": "Deportiva",
+                "link": "https://becas.sep.gob.mx/beca/92/show",
+                "imagen": "https://i0.wp.com/acropolismultimedios.mx/wp-content/uploads/2019/06/conade-660x320-1.jpg"
+            },{
+                "_id": {
+                    "$oid": "645ab71090fd83f01ef2df64"
+                },
+                "titulo": "Beca UK de Estudios en el Extranjero",
+                "descripcion": "Beca para estudiantes que deseen realizar estudios en el extranjero",
+                "fecha_limite": "2023-12-31",
+                "monto": 20000,
+                "requisitos": {
+                    "nivel_estudio": "Licenciatura o superior",
+                    "idiomas": [
+                        "Inglés",
+                        "Francés",
+                        "Alemán",
+                        "Mandarín"
+                    ],
+                    "promedio_minimo": 8
+                },
+                "proceso_seleccion": {
+                    "evaluacion_curricular": true,
+                    "entrevista_personal": true,
+                    "prueba_idiomas": true
+                },
+                "contacto": {
+                    "nombre": "Ana Rodriguez",
+                    "correo": "ana.rodriguez@ejemplo.com",
+                    "telefono": "555-3456"
+                },
+                "categoria": "Extranjero",
+                "link": "https://study-uk.britishcouncil.org/",
+                "imagen": "https://www.acted.org/wp-content/uploads/2020/03/1920px-british-council-logo.svg-.png"
+	        }
+        ];
+
+        for (let i = 0; i < datos.length; i++) {
+            const id = datos[i]["_id"]["$oid"];
+            const titulo = datos[i]["titulo"];
+            const descripcion = datos[i]["descripcion"];
+            const fecha_limite = datos[i]["fecha_limite"];
+            const monto = datos[i]["monto"];
+            const requisitos = datos[i]["requisitos"];
+            const proceso_seleccion = datos[i]["proceso_seleccion"];
+            const contacto = datos[i]["contacto"];
+            const categoria = datos[i]["categoria"];
+            const link = datos[i]["link"];
+            const img = datos[i]["imagen"];
+
+            var html = '<div class="post" id="'+id+'">'+
+                '<img class="img" src="'+ img +'" alt="" />'+
+                '<div class="texts">'+
+                    '<h2>'+ titulo +'</h2>'+
+                    '<p class="info">'+
+                        '<p>Monto: $' +monto+'</p>'+
+                        '<p>Categoria: ' +categoria+'</p>'+
+                        'Fecha limite: <time>'+fecha_limite+'</time>'+
+                    '</p>'+
+                    '<p class="summary">'+descripcion+'</p>'+
+                    '<a class="button_link" type="button" href="'+link+'" target="_blank">Ver más</a>'+
+                '</div>'+
+            '</div>';
+
+            $(html).appendTo($('#body'));
+        }
+    };
+
+    async function cerrar_sesion(){
+        localStorage.clear();
+        window.location.href = "/login";
+        return;
+    }
+
+    async function cargar_info(button){
+        var id = button.id;
+        localStorage.setItem('id_beca', id);
+        window.location.href = "/infoBeca";
+        return;
+    }
+</script>
+
+<style>
+    .img{
+        max-width: 100%;
+    }
+
+    .post{
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .post .texts h2{
+        margin: 0;
+        font-size: 1.8rem;
+    }
+
+    .post .info{
+        margin: 6px 0;
+        color: #888;
+        font-size: .7rem;
+        font-weight: bold;
+        display: flex;
+        gap: 10px;
+    }
+
+    .post .info .author{
+        color: #333;
+    }
+
+    .post .summary{
+        margin: 10px 0;
+        line-height: 1.4rem;
+    }
+
+    header{
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        margin-bottom: 50px;
+        align-items: center;
+    }
+
+    header a{
+        text-decoration: none;
+        color: inherit;
+    }
+  
+    header a.logo{
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    header nav{
+        display: flex;
+        gap: 15px;
+    }
+
+    .nombre_form{
+        text-align: center;
+    }
+
+    .button_link{
+        width: 15%;
+        display: block;
+        text-align: center;
+        background-color: #4a70ec;
+        border: 0;
+        color: #fff;
+        border-radius: 5px;
+        padding: 7px 0;
+        text-decoration:none
+    }
+</style>
