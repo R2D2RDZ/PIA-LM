@@ -16,7 +16,7 @@ var app = express();
 mongoose.connect(
 	"mongodb+srv://jesusvrdz:Dwight00@cluster0.ya6rgyl.mongodb.net/?retryWrites=true&w=majority",
 	{ useNewUrlParser: true, useUnifiedTopology: true}
-  );
+);
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -98,19 +98,6 @@ app.post("/login", async function(req, res){
             console.log("El usuario no existe");
 			return "El usuario no existe";
 		}
-	} catch (error) {
-        console.log(error);
-		return error;
-	}
-});
-
-app.get("/becas", async function(req, res){
-	try {
-        //console.log(req.body);
-		// REVISA SI EL USUARIO EXISTE
-		const user = await User.find({ categoria: "deportiva" });//  findOne({ username: req.body.username });
-        console.log(user);
-		res = user
 	} catch (error) {
         console.log(error);
 		return error;

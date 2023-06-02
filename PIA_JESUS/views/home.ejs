@@ -1,8 +1,9 @@
 <header>
-    <a href="/home"><h1>BecaNet</h1></a>
+    <a href="/home"><img class="img" src="https://media-whatsapp.s3.amazonaws.com/becanet_2.png" alt="" width="150px" height="150px"/></a>
     <nav>
         <a href="/login"><p>Iniciar Sesion</p></a>
         <a href="/register"><p>Registrarme</p></a>
+        <a type="button" onclick="cerrar_sesion()"><p>Cerrar Sesion</p></a>
     </nav>
 </header>
 
@@ -12,14 +13,29 @@
 
 <script>
     var datos = [];
-    window.onload = function() {
-        // AQUI VA EL QUERY DE MOONGO PARA OBTENER LOS DATOS
+    window.onload = async function() {
+        
+        // USUARIO
+        var Usuario = localStorage.getItem('usuario');
+        var Contra = localStorage.getItem('contra');
+        console.log(Usuario, Contra);
+
+        if(!Usuario || Usuario== undefined){
+            window.location.href = '/login';
+            return;
+        }
+
+        if(!Contra || Contra== undefined){
+            window.location.href = '/login';
+            return;
+        }
+
         datos = [
             {
                 "_id": {
                     "$oid": "645ab71090fd83f01ef2df61"
                 },
-                "titulo": "Beca de Excelencia Académica",
+                "titulo": "Beca Santander de Excelencia Académica",
                 "descripcion": "Beca para estudiantes con promedio alto en sus estudios y logros destacados en actividades extracurriculares",
                 "fecha_limite": "2023-07-31",
                 "monto": 10000,
@@ -37,13 +53,15 @@
                     "correo": "juan.perez@ejemplo.com",
                     "telefono": "555-1234"
                 },
-                "categoria": "Academica"
+                "categoria": "Academica",
+                "link": "https://www.becas-santander.com/es/index.html",
+                "imagen": "https://s3-eu-west-1.amazonaws.com/pro-becas-images-s3/emails/OGimage.jpg"
             },
             {
                 "_id": {
                     "$oid": "645ab71090fd83f01ef2df62"
                 },
-                "titulo": "Beca de Investigación en Ciencias Sociales",
+                "titulo": "Beca Benito Juárez de Investigación en Ciencias Sociales",
                 "descripcion": "Beca para estudiantes que quieran realizar una investigación en ciencias sociales",
                 "fecha_limite": "2023-06-30",
                 "monto": 15000,
@@ -60,7 +78,9 @@
                     "correo": "maria.hernandez@ejemplo.com",
                     "telefono": "555-5678"
                 },
-                "categoria": "Investigacion"
+                "categoria": "Investigacion",
+                "link": "https://becas.becasbenitojuarez.gob.mx/",
+                "imagen": "https://i0.wp.com/serendipia.digital/wp-content/uploads/2020/01/becas-benito-juarez-660-amlo-.jpg?fit=660%2C370&ssl=1"
             },
             {
                 "_id": {
@@ -84,12 +104,14 @@
                     "correo": "pedro.sanchez@ejemplo.com",
                     "telefono": "555-9012"
                 },
-                "categoria": "Deportiva"
+                "categoria": "Deportiva",
+                "link": "https://becas.sep.gob.mx/beca/92/show",
+                "imagen": "https://i0.wp.com/acropolismultimedios.mx/wp-content/uploads/2019/06/conade-660x320-1.jpg"
             },{
                 "_id": {
                     "$oid": "645ab71090fd83f01ef2df64"
                 },
-                "titulo": "Beca de Estudios en el Extranjero",
+                "titulo": "Beca UK de Estudios en el Extranjero",
                 "descripcion": "Beca para estudiantes que deseen realizar estudios en el extranjero",
                 "fecha_limite": "2023-12-31",
                 "monto": 20000,
@@ -113,7 +135,9 @@
                     "correo": "ana.rodriguez@ejemplo.com",
                     "telefono": "555-3456"
                 },
-                "categoria": "Extranjero"
+                "categoria": "Extranjero",
+                "link": "https://study-uk.britishcouncil.org/",
+                "imagen": "https://www.acted.org/wp-content/uploads/2020/03/1920px-british-council-logo.svg-.png"
 	        }
         ];
 
@@ -127,10 +151,10 @@
             const proceso_seleccion = datos[i]["proceso_seleccion"];
             const contacto = datos[i]["contacto"];
             const categoria = datos[i]["categoria"];
+            const link = datos[i]["link"];
+            const img = datos[i]["imagen"];
 
-            const img = "https://media.istockphoto.com/id/1358219896/es/foto/costo-universitario-pr%C3%A9stamo-estudiantil-beca-l%C3%ADmite-de-graduados-en-billetes-de-d%C3%B3lar.jpg?s=612x612&w=0&k=20&c=4W4KgJwZ9oVcPlZjsxshvKpQj2B7y3HGJXF7n8NUO8E=";
-
-            var html = '<div class="post" id="'+id+' onclick=()">'+
+            var html = '<div class="post" id="'+id+'">'+
                 '<img class="img" src="'+ img +'" alt="" />'+
                 '<div class="texts">'+
                     '<h2>'+ titulo +'</h2>'+
@@ -140,12 +164,26 @@
                         'Fecha limite: <time>'+fecha_limite+'</time>'+
                     '</p>'+
                     '<p class="summary">'+descripcion+'</p>'+
+                    '<a class="button_link" type="button" href="'+link+'" target="_blank">Ver más</a>'+
                 '</div>'+
             '</div>';
 
             $(html).appendTo($('#body'));
         }
     };
+
+    async function cerrar_sesion(){
+        localStorage.clear();
+        window.location.href = "/login";
+        return;
+    }
+
+    async function cargar_info(button){
+        var id = button.id;
+        localStorage.setItem('id_beca', id);
+        window.location.href = "/infoBeca";
+        return;
+    }
 </script>
 
 <style>
@@ -208,5 +246,17 @@
 
     .nombre_form{
         text-align: center;
+    }
+
+    .button_link{
+        width: 15%;
+        display: block;
+        text-align: center;
+        background-color: #4a70ec;
+        border: 0;
+        color: #fff;
+        border-radius: 5px;
+        padding: 7px 0;
+        text-decoration:none
     }
 </style>
