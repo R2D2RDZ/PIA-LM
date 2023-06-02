@@ -104,6 +104,19 @@ app.post("/login", async function(req, res){
 	}
 });
 
+app.get("/becas", async function(req, res){
+	try {
+        //console.log(req.body);
+		// REVISA SI EL USUARIO EXISTE
+		const user = await User.find({ categoria: "deportiva" });//  findOne({ username: req.body.username });
+        console.log(user);
+		res = user
+	} catch (error) {
+        console.log(error);
+		return error;
+	}
+});
+
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
 	console.log("SERVIDOR INICIADO CORRECTAMENTE");
