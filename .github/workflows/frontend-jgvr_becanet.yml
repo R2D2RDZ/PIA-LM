@@ -25,7 +25,7 @@ jobs:
         run: |
           cd PIA_JESUS
           npm install
-          node app.js
+          node app.js   
       
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
